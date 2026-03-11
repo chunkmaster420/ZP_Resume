@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zachary Pakis — Finance & Investments</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f0e8;
+    --ink: #0e0e0e;
+    --gold: #c9a84c;
+    --gold-light: #e8d09a;
+    --rust: #8b3a2a;
+    --slate: #2c3e50;
+    --mid: #6b6b6b;
+    --line: rgba(14,14,14,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(245,240,232,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--mid);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 6rem 5rem;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--rust);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--mid);
+    max-width: 380px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    transition: all 0.25s;
+    cursor: pointer;
+    background: transparent;
+  }
+  .btn:hover { background: var(--ink); color: var(--cream); }
+  .btn-fill { background: var(--ink); color: var(--cream); }
+  .btn-fill:hover { background: var(--rust); border-color: var(--rust); }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(6rem, 14vw, 18rem);
+    font-weight: 900;
+    font-style: italic;
+    color: rgba(201,168,76,0.08);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+  .stat-card {
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(4px);
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.4rem;
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .stat-desc { font-size: 0.8rem; color: var(--mid); margin-top: 0.2rem; }
+
+  /* SECTION SHARED */
+  section { padding: 7rem 5rem; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1.5rem;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+  }
+
+  /* ABOUT */
+  .about { background: var(--ink); color: var(--cream); }
+  .about .section-num { color: var(--gold); }
+  .about .section-header { border-color: rgba(255,255,255,0.1); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+  .about-body { font-size: 1.05rem; line-height: 1.85; color: rgba(245,240,232,0.7); }
+  .about-body strong { color: var(--gold-light); font-weight: 500; }
+  .about-highlights { display: flex; flex-direction: column; gap: 1.5rem; }
+  .highlight-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding: 1.2rem;
+    border: 1px solid rgba(201,168,76,0.25);
+    transition: border-color 0.25s;
+  }
+  .highlight-item:hover { border-color: var(--gold); }
+  .highlight-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .highlight-text h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .highlight-text p { font-size: 0.82rem; color: rgba(245,240,232,0.5); line-height: 1.5; }
+
+  /* EXPERIENCE */
+  .experience { background: var(--cream); }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .exp-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .exp-meta {}
+  .exp-org {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .exp-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .exp-location {
+    font-size: 0.78rem;
+    color: var(--mid);
+    font-family: 'DM Mono', monospace;
+  }
+  .exp-body {}
+  .exp-desc {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--mid);
+    margin-bottom: 1.2rem;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 0.8rem;
+    color: var(--slate);
+  }
+  .exp-bullets li::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    margin-top: 0.05rem;
+  }
+
+  /* EDUCATION */
+  .education { background: #1a1a1a; color: var(--cream); }
+  .education .section-num { color: var(--gold); }
+  .education .section-header { border-color: rgba(255,255,255,0.1); }
+  .edu-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+  }
+  .edu-school {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .edu-degree {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 1.2rem;
+  }
+  .edu-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+  }
+  .edu-gpa {
+    text-align: right;
+  }
+  .edu-gpa-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+  .edu-gpa-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  /* SKILLS */
+  .skills { background: var(--cream); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .skill-cell {
+    padding: 2.2rem 2rem;
+    border: 1px solid var(--line);
+    margin: -0.5px;
+    transition: background 0.25s, color 0.25s;
+    cursor: default;
+  }
+  .skill-cell:hover { background: var(--ink); color: var(--cream); }
+  .skill-cell:hover .skill-name { color: var(--cream); }
+  .skill-cell:hover .skill-bar-fill { background: var(--gold); }
+  .skill-emoji { font-size: 1.5rem; margin-bottom: 0.8rem; }
+  .skill-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--ink);
+    transition: color 0.25s;
+  }
+  .skill-sub { font-size: 0.75rem; color: var(--mid); margin-bottom: 0.8rem; }
+  .skill-bar {
+    height: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: background 0.25s;
+  }
+
+  /* CONTACT */
+  .contact {
+    background: var(--rust);
+    color: var(--cream);
+    text-align: center;
+    padding: 7rem 5rem;
+  }
+  .contact .section-num { color: var(--gold-light); justify-content: center; }
+  .contact .section-header { border-color: rgba(255,255,255,0.15); justify-content: center; }
+  .contact-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 900;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  .contact-sub {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 3rem;
+  }
+  .contact-links { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1.5px solid rgba(245,240,232,0.4);
+    transition: all 0.25s;
+  }
+  .contact-link:hover {
+    background: var(--cream);
+    color: var(--rust);
+    border-color: var(--cream);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    padding: 2rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 5rem 2rem 2rem; border-right: none; border-bottom: 1px solid var(--line); }
+    .hero-right { padding: 2rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+    section { padding: 5rem 2rem; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .edu-card { grid-template-columns: 1fr; }
+    .edu-gpa { text-align: left; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Zachary Pakis</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Finance &amp; Investment Professional</p>
+    <h1 class="hero-name">Zachary<br><em>Pakis</em></h1>
+    <p class="hero-sub">Rutgers University finance student, NCAA student-athlete, and aspiring investment banker with a passion for equity research and financial markets.</p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn btn-fill">View Experience</a>
+      <a href="#contact" class="btn">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-text">Finance</div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-label">Current Role</div>
+        <div class="stat-value">Student Athlete</div>
+        <div class="stat-desc">Rutgers Newark Men's Volleyball — Top-20 NCAA Program</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Career Focus</div>
+        <div class="stat-value">Investment Banking</div>
+        <div class="stat-desc">Targeting IB, Asset Management &amp; Financial Markets</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Location</div>
+        <div class="stat-value">Newark, NJ</div>
+        <div class="stat-desc">Open to relocation — incl. Dallas–Fort Worth</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-header">
+    <span class="section-num">01 — About</span>
+    <h2 class="section-title">Who I Am</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-body">
+      <p>I'm a <strong>Finance student at Rutgers University–Newark</strong> with a clear-eyed focus on building a career in investment banking and asset management. My path has been shaped by hands-on exposure at <strong>Stifel Financial</strong>, competitive investment analysis at the <strong>TCU Investor Challenge</strong>, and the daily discipline demanded by Division III collegiate athletics.</p>
+      <br>
+      <p>I believe the qualities that make a great athlete — <strong>relentless preparation, composure under pressure, and the ability to execute as part of a team</strong> — translate directly into high-performance finance careers. I'm actively seeking internship opportunities where I can bring that same dedication to real markets and real clients.</p>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-item">
+        <div class="highlight-icon">📈</div>
+        <div class="highlight-text">
+          <h4>Market Driven</h4>
+          <p>Deep interest in equity research, asset allocation, and financial markets — from classroom theory to real-world application at Stifel Financial.</p>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon">🏐</div>
+        <div class="highlight-text">
+          <h4>NCAA Competitor</h4>
+          <p>Competing on a nationally ranked Division III volleyball program while maintaining strong academic performance — proof of prioritization and grit.</p>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-icon">🔍</div>
+        <div class="highlight-text">
+          <h4>Analytical Thinker</h4>
+          <p>Presented investment recommendations at the TCU Investor Challenge, applying valuation frameworks and industry research to real equity decisions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02 — Experience</span>
+    <h2 class="section-title">Work &amp; Projects</h2>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-org">Stifel Financial</div>
+      <div class="exp-role">Financial Advisory Shadow</div>
+      <div class="exp-location">Waco, TX</div>
+    </div>
+    <div class="exp-body">
+      <p class="exp-desc">Shadowed senior Financial Advisor Steve Myatt, gaining direct exposure to the day-to-day practice of wealth management and client advisory at one of the nation's leading investment firms.</p>
+      <ul class="exp-bullets">
+        <li>Observed live client portfolio reviews and investment planning discussions, building intuition for client relationship management</li>
+        <li>Studied fundamentals of asset allocation, equity research, and portfolio construction in a professional setting</li>
+        <li>Gained practical exposure to financial advisory processes, compliance considerations, and practice management</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-org">Texas Christian University</div>
+      <div class="exp-role">TCU Investor Challenge</div>
+      <div class="exp-location">Participant</div>
+    </div>
+    <div class="exp-body">
+      <p class="exp-desc">Competed in a rigorous investment analysis challenge hosted by TCU, applying academic finance knowledge to evaluate real equity opportunities under competitive conditions.</p>
+      <ul class="exp-bullets">
+        <li>Conducted deep-dive research on company financials, industry trends, and valuation metrics to identify investment opportunities</li>
+        <li>Collaborated with team members to synthesize research into a cohesive investment thesis and presentation</li>
+        <li>Developed and delivered formal investment recommendations to a panel of judges, practicing financial communication skills</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-org">Rutgers Newark</div>
+      <div class="exp-role">NCAA Student-Athlete</div>
+      <div class="exp-location">New Brunswick, NJ</div>
+    </div>
+    <div class="exp-body">
+      <p class="exp-desc">Active member of the Rutgers Newark Men's Volleyball Team, a nationally ranked Top-20 NCAA program. Manages the dual demands of competitive athletics and a rigorous finance curriculum.</p>
+      <ul class="exp-bullets">
+        <li>Competes at the NCAA collegiate level representing a Top-20 nationally ranked program</li>
+        <li>Maintains full academic course load while adhering to a demanding training and competition schedule</li>
+        <li>Develops leadership, teamwork, and time management skills tested in high-pressure game environments</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="education" id="education">
+  <div class="section-header reveal">
+    <span class="section-num">03 — Education</span>
+    <h2 class="section-title">Academic Background</h2>
+  </div>
+  <div class="edu-card reveal">
+    <div>
+      <div class="edu-school">Rutgers University – Newark</div>
+      <div class="edu-degree">Bachelor of Science in Finance &nbsp;·&nbsp; Expected Graduation: May 2028</div>
+      <div class="edu-tags">
+        <span class="tag">Finance</span>
+        <span class="tag">Equity Research</span>
+        <span class="tag">Investment Analysis</span>
+        <span class="tag">Student-Athlete</span>
+        <span class="tag">Top-20 NCAA Volleyball</span>
+      </div>
+    </div>
+    <div class="edu-gpa">
+      <span class="edu-gpa-num">3.0</span>
+      <span class="edu-gpa-label">GPA</span>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">04 — Skills</span>
+    <h2 class="section-title">Core Competencies</h2>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-cell">
+      <div class="skill-emoji">📊</div>
+      <div class="skill-name">Financial Analysis</div>
+      <div class="skill-sub">Income statements, balance sheets, cash flow</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-emoji">🔎</div>
+      <div class="skill-name">Equity Research</div>
+      <div class="skill-sub">Valuation, industry analysis, due diligence</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:82%"></div></div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-emoji">📉</div>
+      <div class="skill-name">Investment Research</div>
+      <div class="skill-sub">Market trends, portfolio evaluation</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-emoji">📋</div>
+      <div class="skill-name">Microsoft Excel</div>
+      <div class="skill-sub">Financial modeling, data analysis</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-emoji">🤝</div>
+      <div class="skill-name">Team Leadership</div>
+      <div class="skill-sub">Collaboration, communication, execution</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+    </div>
+    <div class="skill-cell">
+      <div class="skill-emoji">⏱</div>
+      <div class="skill-name">Time Management</div>
+      <div class="skill-sub">Athlete-tested prioritization &amp; discipline</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-header" style="border-color:rgba(255,255,255,0.15);">
+    <span class="section-num" style="color:rgba(245,240,232,0.5); font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase;">05 — Contact</span>
+  </div>
+  <h2 class="contact-heading reveal">Let's Connect.</h2>
+  <p class="contact-sub reveal">Open to internship opportunities in Investment Banking, Asset Management, and Financial Markets.<br>Available to relocate — including the Dallas–Fort Worth area.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:zachary.pakis@email.com" class="contact-link">✉ Email Me</a>
+    <a href="https://linkedin.com/in/zacharypakis" class="contact-link" target="_blank">LinkedIn</a>
+    <a href="tel:8176883178" class="contact-link">📞 (817) 688-3178</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Zachary Pakis</span>
+  <span>Finance · New Brunswick, NJ</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
